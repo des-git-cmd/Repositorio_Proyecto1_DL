@@ -1,0 +1,9 @@
+# Archivos generados por las herramientas FPGA
+abc.history
+src/build/*
+
+# Mantener la carpeta build en Git
+!src/build/.gitkeep
+
+# Simulaciones
+*.vcd
