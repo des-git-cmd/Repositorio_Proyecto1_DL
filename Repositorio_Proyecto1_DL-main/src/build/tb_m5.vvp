@@ -1,0 +1,73 @@
+#! 
+:ivl_version "13.0 (devel)" "(s20221226-103-g418bbc14b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\Users\steph\DOWNLO~1\OSS-CA~1\lib\ivl\system.vpi";
+:vpi_module "C:\Users\steph\DOWNLO~1\OSS-CA~1\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\Users\steph\DOWNLO~1\OSS-CA~1\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\Users\steph\DOWNLO~1\OSS-CA~1\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\Users\steph\DOWNLO~1\OSS-CA~1\lib\ivl\va_math.vpi";
+:vpi_module "C:\Users\steph\DOWNLO~1\OSS-CA~1\lib\ivl\v2009.vpi";
+S_00000000001b8b40 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_00000000060c6210 .scope module, "tb_m5_recuperador_dato" "tb_m5_recuperador_dato" 3 1;
+ .timescale 0 0;
+v00000000001bbae0_0 .net "dato_recuperado", 3 0, L_00000000001bb720;  1 drivers
+v00000000001bb9a0_0 .var "palabra_corregida", 7 0;
+S_00000000060c63a0 .scope module, "dut" "m5_recuperador_dato" 3 7, 4 1 0, S_00000000060c6210;
+ .timescale 0 0;
+    .port_info 0 /INPUT 8 "palabra_corregida_pi";
+    .port_info 1 /OUTPUT 4 "dato_recuperado_po";
+v00000000001bb900_0 .net *"_ivl_11", 0 0, L_00000000001bb680;  1 drivers
+v00000000001bbe00_0 .net *"_ivl_16", 0 0, L_00000000001bbf40;  1 drivers
+v00000000001bbb80_0 .net *"_ivl_3", 0 0, L_00000000001bb860;  1 drivers
+v00000000001bb4a0_0 .net *"_ivl_7", 0 0, L_00000000001bba40;  1 drivers
+v00000000001bc120_0 .net "dato_recuperado_po", 3 0, L_00000000001bb720;  alias, 1 drivers
+v00000000001bbea0_0 .net "palabra_corregida_pi", 7 0, v00000000001bb9a0_0;  1 drivers
+L_00000000001bb860 .part v00000000001bb9a0_0, 6, 1;
+L_00000000001bba40 .part v00000000001bb9a0_0, 5, 1;
+L_00000000001bb680 .part v00000000001bb9a0_0, 4, 1;
+L_00000000001bb720 .concat8 [ 1 1 1 1], L_00000000001bbf40, L_00000000001bb680, L_00000000001bba40, L_00000000001bb860;
+L_00000000001bbf40 .part v00000000001bb9a0_0, 2, 1;
+    .scope S_00000000060c6210;
+T_0 ;
+    %pushi/vec4 210, 0, 8;
+    %store/vec4 v00000000001bb9a0_0, 0, 8;
+    %delay 1, 0;
+    %load/vec4 v00000000001bbae0_0;
+    %cmpi/ne 10, 0, 4;
+    %jmp/0xz  T_0.0, 6;
+    %vpi_call/w 3 28 "$fatal", 32'sb00000000000000000000000000000001, "FALLO: recuperacion del dato 1010" {0 0 0};
+T_0.0 ;
+    %vpi_call/w 3 30 "$display", "OK: dato 1010 recuperado" {0 0 0};
+    %pushi/vec4 0, 0, 8;
+    %store/vec4 v00000000001bb9a0_0, 0, 8;
+    %delay 1, 0;
+    %load/vec4 v00000000001bbae0_0;
+    %cmpi/ne 0, 0, 4;
+    %jmp/0xz  T_0.2, 6;
+    %vpi_call/w 3 42 "$fatal", 32'sb00000000000000000000000000000001, "FALLO: recuperacion del dato 0000" {0 0 0};
+T_0.2 ;
+    %vpi_call/w 3 44 "$display", "OK: dato 0000 recuperado" {0 0 0};
+    %pushi/vec4 116, 0, 8;
+    %store/vec4 v00000000001bb9a0_0, 0, 8;
+    %delay 1, 0;
+    %load/vec4 v00000000001bbae0_0;
+    %cmpi/ne 15, 0, 4;
+    %jmp/0xz  T_0.4, 6;
+    %vpi_call/w 3 59 "$fatal", 32'sb00000000000000000000000000000001, "FALLO: recuperacion del dato 1111" {0 0 0};
+T_0.4 ;
+    %vpi_call/w 3 61 "$display", "OK: dato 1111 recuperado" {0 0 0};
+    %vpi_call/w 3 64 "$display", "==========================================" {0 0 0};
+    %vpi_call/w 3 65 "$display", "TODAS LAS PRUEBAS DE RECUPERACION PASARON" {0 0 0};
+    %vpi_call/w 3 66 "$display", "==========================================" {0 0 0};
+    %vpi_call/w 3 68 "$finish" {0 0 0};
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 5;
+    "N/A";
+    "<interactive>";
+    "-";
+    "src\sim\tb_m5_recuperador_dato.sv";
+    "src\design\m5_recuperador_dato.sv";

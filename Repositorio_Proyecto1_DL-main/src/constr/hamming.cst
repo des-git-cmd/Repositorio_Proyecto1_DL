@@ -1,0 +1,137 @@
+// Entradas del codificador físico
+
+IO_LOC  "palabra_pi[7]" 25;
+IO_PORT "palabra_pi[7]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "palabra_pi[6]" 26;
+IO_PORT "palabra_pi[6]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "palabra_pi[5]" 27;
+IO_PORT "palabra_pi[5]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "palabra_pi[4]" 28;
+IO_PORT "palabra_pi[4]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "palabra_pi[3]" 29;
+IO_PORT "palabra_pi[3]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "palabra_pi[2]" 30;
+IO_PORT "palabra_pi[2]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+// Estas dos entradas son de 1.8 V.
+// Necesitan divisor de voltaje externo.
+
+IO_LOC  "palabra_pi[1]" 79;
+IO_PORT "palabra_pi[1]" IO_TYPE=LVCMOS18 PULL_MODE=DOWN;
+
+IO_LOC  "palabra_pi[0]" 80;
+IO_PORT "palabra_pi[0]" IO_TYPE=LVCMOS18 PULL_MODE=DOWN;
+
+
+// LED integrados: activos en bajo
+
+IO_LOC  "led[0]" 10;
+IO_PORT "led[0]" DRIVE=8 IO_TYPE=LVCMOS18;
+
+IO_LOC  "led[1]" 11;
+IO_PORT "led[1]" DRIVE=8 IO_TYPE=LVCMOS18;
+
+IO_LOC  "led[2]" 13;
+IO_PORT "led[2]" DRIVE=8 IO_TYPE=LVCMOS18;
+
+IO_LOC  "led[3]" 14;
+IO_PORT "led[3]" DRIVE=8 IO_TYPE=LVCMOS18;
+
+IO_LOC  "led[4]" 15;
+IO_PORT "led[4]" DRIVE=8 IO_TYPE=LVCMOS18;
+
+IO_LOC  "led[5]" 16;
+IO_PORT "led[5]" DRIVE=8 IO_TYPE=LVCMOS18;
+
+
+
+// ============================================================
+// DISPLAY 7 SEGMENTOS C-391E
+// ============================================================
+
+IO_LOC  "seg[0]" 51;
+IO_PORT "seg[0]" DRIVE=8 IO_TYPE=LVCMOS33;
+
+IO_LOC  "seg[1]" 42;
+IO_PORT "seg[1]" DRIVE=8 IO_TYPE=LVCMOS33;
+
+IO_LOC  "seg[2]" 53;
+IO_PORT "seg[2]" DRIVE=8 IO_TYPE=LVCMOS33;
+
+IO_LOC  "seg[3]" 54;
+IO_PORT "seg[3]" DRIVE=8 IO_TYPE=LVCMOS33;
+
+IO_LOC  "seg[4]" 55;
+IO_PORT "seg[4]" DRIVE=8 IO_TYPE=LVCMOS33;
+
+IO_LOC  "seg[5]" 56;
+IO_PORT "seg[5]" DRIVE=8 IO_TYPE=LVCMOS33;
+
+IO_LOC  "seg[6]" 57;
+IO_PORT "seg[6]" DRIVE=8 IO_TYPE=LVCMOS33;
+
+
+
+// ============================================================
+// DIP DE 8 - CONTROL DE ERRORES Y MODO
+// ============================================================
+
+IO_LOC  "posicion_error_1_pi[0]" 41;
+IO_PORT "posicion_error_1_pi[0]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "posicion_error_1_pi[1]" 63;
+IO_PORT "posicion_error_1_pi[1]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "posicion_error_1_pi[2]" 76;
+IO_PORT "posicion_error_1_pi[2]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+
+IO_LOC  "posicion_error_2_pi[0]" 48;
+IO_PORT "posicion_error_2_pi[0]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "posicion_error_2_pi[1]" 49;
+IO_PORT "posicion_error_2_pi[1]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "posicion_error_2_pi[2]" 31;
+IO_PORT "posicion_error_2_pi[2]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+
+IO_LOC  "habilitar_errores_pi" 32;
+IO_PORT "habilitar_errores_pi" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+
+IO_LOC  "modo_tx_pi" 77;
+IO_PORT "modo_tx_pi" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+// ============================================================
+// ENLACE BIDIRECCIONAL ENTRE FPGAs
+// ============================================================
+
+IO_LOC  "enlace_io[0]" 38;
+IO_PORT "enlace_io[0]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "enlace_io[1]" 37;
+IO_PORT "enlace_io[1]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "enlace_io[2]" 36;
+IO_PORT "enlace_io[2]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "enlace_io[3]" 39;
+IO_PORT "enlace_io[3]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "enlace_io[4]" 33;
+IO_PORT "enlace_io[4]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "enlace_io[5]" 34;
+IO_PORT "enlace_io[5]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "enlace_io[6]" 40;
+IO_PORT "enlace_io[6]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+IO_LOC  "enlace_io[7]" 35;
+IO_PORT "enlace_io[7]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
