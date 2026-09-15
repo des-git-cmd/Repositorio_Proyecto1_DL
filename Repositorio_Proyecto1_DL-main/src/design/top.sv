@@ -26,8 +26,13 @@ module top (
     // ============================================================
     // SALIDAS
     // ============================================================
+      input  logic       seleccionar_error_pi,
+
     output logic [5:0] led,
-    output logic [6:0] seg
+    output logic [6:0] seg,
+
+    output logic       habilitar_display_dato_po,
+    output logic       habilitar_display_error_po
 );
 
 
@@ -37,9 +42,6 @@ module top (
 
     logic [3:0] dato_tx;
 
-    logic [6:0] hamming_referencia;
-    logic       paridad_referencia;
-    logic       palabra_correcta;
 
     logic [7:0] palabra_tx;
 
@@ -77,6 +79,8 @@ module top (
 
     logic [3:0] dato_mostrar;
 
+    logic [3:0] valor_display;
+
 
     // ============================================================
     // RECUPERAR DATO ORIGINAL DEL TRANSMISOR
@@ -89,32 +93,6 @@ module top (
         palabra_pi[2]
     };
 
-
-    // ============================================================
-    // M1 - REFERENCIA DIGITAL DEL HAMMING FÍSICO
-    // ============================================================
-
-    m1_codificador_hamming referencia (
-        .dato_pi    (dato_tx),
-        .hamming_po (hamming_referencia)
-    );
-
-
-    // ============================================================
-    // PARIDAD GLOBAL DE REFERENCIA
-    // ============================================================
-
-    assign paridad_referencia =
-        ^hamming_referencia;
-
-
-    // ============================================================
-    // VALIDACIÓN DEL CIRCUITO FÍSICO
-    // ============================================================
-
-    assign palabra_correcta =
-        (palabra_pi[6:0] == hamming_referencia) &&
-        (palabra_pi[7]   == paridad_referencia);
 
 
     // ============================================================
@@ -145,11 +123,12 @@ module top (
     // SW8 = 0 -> recibe
     // ============================================================
 
-    assign enlace_io =
-        modo_tx_pi ? palabra_tx : 8'bzzzzzzzz;
+    // Prueba individual: el receptor recibe internamente
+    // la palabra física después del inyector de errores.
+    assign palabra_rx = palabra_tx;
 
-    assign palabra_rx =
-        enlace_io;
+    // Bus externo deshabilitado durante esta prueba.
+    assign enlace_io = 8'bzzzzzzzz;
 
 
     // ============================================================
@@ -216,10 +195,27 @@ module top (
     // M6 - DISPLAY HEXADECIMAL ACTUAL
     // ============================================================
 
-    m6_display_7segmentos display_dato (
-        .dato_pi (dato_mostrar),
+        // Selector = 0: dato.
+    // Selector = 1: posición/tipo de error.
+    // Multiplexor expresado con operaciones booleanas.
+    assign valor_display =
+        (dato_mostrar    & {4{~seleccionar_error_pi}}) |
+        (codigo_error_rx & {4{ seleccionar_error_pi}});
+
+    // Un solo display habilitado a la vez.
+    // Nivel alto activa el transistor NPN correspondiente.
+    assign habilitar_display_dato_po =
+        ~seleccionar_error_pi;
+
+    assign habilitar_display_error_po =
+        seleccionar_error_pi;
+
+    // Las siete líneas se compartirán entre ambos displays.
+    m6_display_7segmentos display_compartido (
+        .dato_pi (valor_display),
         .seg_po  (seg)
     );
+    
 
 
     // ============================================================
@@ -246,15 +242,10 @@ module top (
         ~(modo_tx_pi ? error_insertado : error_sec_rx);
 
 
-    // ============================================================
-    // LED 5
-    //
-    // TX -> Hamming físico correcto
-    // RX -> error doble DED
-    // ============================================================
-
+    // TX: paridad global par -> LED encendido.
+    // RX: error doble detectado -> LED encendido.
     assign led[5] =
-        ~(modo_tx_pi ? palabra_correcta : error_ded_rx);
+        modo_tx_pi ? (^palabra_pi) : ~error_ded_rx;
 
 
 endmodule
