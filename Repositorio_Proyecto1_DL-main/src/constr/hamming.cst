@@ -144,5 +144,3 @@ IO_PORT "habilitar_display_dato_po" DRIVE=4 IO_TYPE=LVCMOS18;
 IO_LOC  "habilitar_display_error_po" 82;
 IO_PORT "habilitar_display_error_po" DRIVE=4 IO_TYPE=LVCMOS18;
 
-IO_LOC  "seleccionar_error_pi" 83;
-IO_PORT "seleccionar_error_pi" IO_TYPE=LVCMOS18 PULL_MODE=DOWN;
