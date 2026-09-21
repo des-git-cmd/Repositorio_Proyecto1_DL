@@ -146,8 +146,11 @@ module top (
     // DIP 8 - SELECCION DEL DATO Y DEL DISPLAY
     // ============================================================
 
+    //assign dato_mostrar =
+        //modo_tx_pi ? dato_tx : dato_rx;
+
     assign dato_mostrar =
-        modo_tx_pi ? dato_tx : dato_rx;
+        modo_tx_pi ? dato_tx : codigo_error_rx;        
 
     // Nivel alto activa el transistor NPN.
     assign habilitar_display_dato_po =
@@ -170,10 +173,17 @@ module top (
     // Los LED integrados son activos en bajo.
     // ============================================================
 
-    assign led[0] = ~dato_mostrar[3];
-    assign led[1] = ~dato_mostrar[2];
-    assign led[2] = ~dato_mostrar[1];
-    assign led[3] = ~dato_mostrar[0];
+    assign led[0] =
+        ~(modo_tx_pi ? dato_tx[3] : dato_rx[3]);
+
+    assign led[1] =
+        ~(modo_tx_pi ? dato_tx[2] : dato_rx[2]);
+
+    assign led[2] =
+        ~(modo_tx_pi ? dato_tx[1] : dato_rx[1]);
+
+    assign led[3] =
+        ~(modo_tx_pi ? dato_tx[0] : dato_rx[0]);
 
     // ============================================================
     // LED 4

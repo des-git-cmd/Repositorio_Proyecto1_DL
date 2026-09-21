@@ -211,7 +211,7 @@ module tb_top_visualizacion;
         comprobar_receptor(1'b0, 1'b0);
 
         $display("OK: errores deshabilitados; SEC y DED apagados");
-        $display("VISUALIZACION TX/RX: TODAS LAS PRUEBAS PASARON");
+        $display("VISUALIZACION TX/RX:  TODAS LAS PRUEBAS PASARON");
 
         $finish;
     end
