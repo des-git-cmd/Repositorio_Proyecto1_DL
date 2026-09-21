@@ -135,3 +135,12 @@ IO_PORT "enlace_io[6]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
 
 IO_LOC  "enlace_io[7]" 35;
 IO_PORT "enlace_io[7]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+
+// Seleccion manual de displays: banco de 1.8 V.
+
+IO_LOC  "habilitar_display_dato_po" 81;
+IO_PORT "habilitar_display_dato_po" DRIVE=4 IO_TYPE=LVCMOS18;
+
+IO_LOC  "habilitar_display_error_po" 82;
+IO_PORT "habilitar_display_error_po" DRIVE=4 IO_TYPE=LVCMOS18;
+

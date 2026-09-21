@@ -8,23 +8,21 @@ module top (
     input  logic [2:0] posicion_error_2_pi,
     input  logic       habilitar_errores_pi,
 
-    // DIP 8:
-    // 1 = visualizar transmisor.
-    // 0 = visualizar receptor.
+    // DIP 8: 1 = transmitir; 0 = recibir.
     input  logic       modo_tx_pi,
 
-    // Reservado para la futura conexion entre FPGAs.
+    // Bus entre las dos FPGA.
     inout  wire [7:0] enlace_io,
 
     output logic [5:0] led,
     output logic [6:0] seg,
 
-    // Se conservan los nombres para mantener el cableado.
-    // Pin 81: Q1, siete segmentos del transmisor.
+    // Se conservan los nombres y el cableado de los displays.
+    // Pin 81: display del transmisor.
     output logic       habilitar_display_dato_po,
 
-    // Pin 82: Q2, siete segmentos del receptor.
-    // Aunque el nombre diga "error", ahora muestra dato_rx.
+    // Pin 82: display del receptor.
+    // El nombre dice "error", pero este display muestra dato_rx.
     output logic       habilitar_display_error_po
 );
 
@@ -50,12 +48,9 @@ module top (
 
     logic [3:0] dato_rx;
 
-    // Resultado de M7, conservado como senal interna.
-    // 0 = sin error.
-    // 1-7 = posicion Hamming.
-    // 8 = error en paridad global.
-    // D = doble error.
-    // No se muestra en los siete segmentos de esta version.
+    // M7 conserva este resultado como senal interna:
+    // 0 = sin error; 1-7 = posicion Hamming;
+    // 8 = error en paridad global; D = doble error.
     logic [3:0] codigo_error_rx;
 
     // ============================================================
@@ -66,9 +61,6 @@ module top (
 
     // ============================================================
     // EXTRAER EL DATO DE LA PALABRA FISICA
-    //
-    // No se genera Hamming en la FPGA:
-    // la palabra codificada entra por palabra_pi.
     // ============================================================
 
     assign dato_tx = {
@@ -87,22 +79,24 @@ module top (
         .posicion_error_1_pi   (posicion_error_1_pi),
         .posicion_error_2_pi   (posicion_error_2_pi),
         .habilitar_errores_pi  (habilitar_errores_pi),
-        .palabra_error_po     (palabra_tx)
+        .palabra_error_po      (palabra_tx)
     );
 
     assign error_insertado =
         |(palabra_tx ^ palabra_pi);
 
     // ============================================================
-    // RECORRIDO INDIVIDUAL CON UNA FPGA
+    // ENLACE ENTRE LAS DOS FPGA
     //
-    // El receptor procesa siempre la salida del inyector.
-    // DIP 8 selecciona la visualizacion TX o RX.
-    // No se utiliza el bus externo en esta version.
+    // DIP 8 = 1: la FPGA transmite palabra_tx.
+    // DIP 8 = 0: libera el bus y recibe desde la otra FPGA.
     // ============================================================
 
-    assign palabra_rx = palabra_tx;
-    assign enlace_io  = 8'bzzzzzzzz;
+    assign enlace_io =
+        modo_tx_pi ? palabra_tx : 8'bzzzzzzzz;
+
+    assign palabra_rx =
+        enlace_io;
 
     // ============================================================
     // M3 - SINDROME Y COMPROBACION DE PARIDAD
@@ -138,9 +132,6 @@ module top (
 
     // ============================================================
     // M7 - POSICION Y TIPO DE ERROR
-    //
-    // Se conserva el modulo, aunque su codigo no tiene
-    // una salida visual en esta version.
     // ============================================================
 
     m7_indicador_error indicador_error (
@@ -152,10 +143,7 @@ module top (
     );
 
     // ============================================================
-    // DIP 8 - SELECCION DEL DATO Y DEL SIETE SEGMENTOS
-    //
-    // 1: Q1 encendido, muestra el dato enviado.
-    // 0: Q2 encendido, muestra el dato recuperado.
+    // DIP 8 - SELECCION DEL DATO Y DEL DISPLAY
     // ============================================================
 
     assign dato_mostrar =
@@ -170,9 +158,6 @@ module top (
 
     // ============================================================
     // M6 - DECODIFICADOR HEXADECIMAL A SIETE SEGMENTOS
-    //
-    // Las siete salidas se comparten entre ambos indicadores.
-    // Solo uno queda habilitado a la vez.
     // ============================================================
 
     m6_display_7segmentos display_compartido (
@@ -182,7 +167,6 @@ module top (
 
     // ============================================================
     // LED 0-3 - DATO SELECCIONADO
-    //
     // Los LED integrados son activos en bajo.
     // ============================================================
 
@@ -193,7 +177,6 @@ module top (
 
     // ============================================================
     // LED 4
-    //
     // TX: se inserto un error.
     // RX: se detecto un error sencillo.
     // ============================================================
@@ -203,9 +186,7 @@ module top (
 
     // ============================================================
     // LED 5
-    //
     // TX: paridad global par -> encendido.
-    // Esta comprobacion no valida todas las paridades Hamming.
     // RX: doble error detectado -> encendido.
     // ============================================================
 

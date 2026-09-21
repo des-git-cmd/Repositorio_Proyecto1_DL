@@ -11,8 +11,8 @@ module tb_sistema_secded;
     // CODIFICACIÓN
     // ============================================================
 
-    logic [6:0] hamming;
-    logic       paridad_global;
+    logic [6:0] hamming_referencia;
+    
     logic [7:0] palabra_original;
 
 
@@ -44,35 +44,12 @@ module tb_sistema_secded;
     logic [3:0] codigo_error;
 
 
-    // ============================================================
-    // M1 - CODIFICADOR HAMMING
-    // ============================================================
-
-    m1_codificador_hamming codificador (
+    // Modelo de referencia SOLO para simulación.
+    // No alimenta la entrada del inyector.
+    m1_codificador_hamming referencia_tb (
         .dato_pi    (dato_original),
-        .hamming_po (hamming)
+        .hamming_po (hamming_referencia)
     );
-
-
-    // ============================================================
-    // PARIDAD GLOBAL
-    // ============================================================
-
-    assign paridad_global = ^hamming;
-
-
-    // ============================================================
-    // PALABRA SEC-DED COMPLETA
-    //
-    // {PG, i3, i2, i1, c2, i0, c1, c0}
-    // ============================================================
-
-    assign palabra_original = {
-        paridad_global,
-        hamming
-    };
-
-
     // ============================================================
     // M2 - INYECTOR DE ERRORES
     // ============================================================
@@ -144,6 +121,8 @@ module tb_sistema_secded;
         // Usamos E = 1110 como dato principal.
         dato_original = 4'b1110;
 
+        // Entrada simulada equivalente a las salidas de los 74HC86.
+         palabra_original = 8'h78;
 
         // ========================================================
         // PRUEBA 1
@@ -156,6 +135,10 @@ module tb_sistema_secded;
         posicion_error_2 = 3'b000;
 
         #1;
+
+                if (palabra_original !==
+            {(^hamming_referencia), hamming_referencia})
+            $fatal(1, "FALLO: entrada distinta de la referencia Hamming");
 
         if (dato_recuperado !== 4'b1110)
             $fatal(1, "FALLO: dato sin error");
@@ -269,8 +252,8 @@ module tb_sistema_secded;
         posicion_error_1 = 3'b010;
         posicion_error_2 = 3'b101;
 
-        #1;
-
+        #1;         
+       
         if (error_sec !== 1'b0)
             $fatal(1, "FALLO: SEC activo durante error doble");
 
@@ -294,10 +277,18 @@ module tb_sistema_secded;
 
         dato_original = 4'b1010;
 
+        palabra_original = 8'hD2;
+
         posicion_error_1 = 3'b100;
         posicion_error_2 = 3'b100;
 
+
         #1;
+
+                if (palabra_original !==
+            {(^hamming_referencia), hamming_referencia})
+            $fatal(1, "FALLO: entrada distinta de la referencia Hamming");
+
 
         if (dato_recuperado !== 4'b1010)
             $fatal(1, "FALLO: no recupero A");
